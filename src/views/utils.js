@@ -10,8 +10,8 @@ export function setCoords(self, svg_namespace) {
     let svgRect = self.children?.namedItem(svg_namespace).viewBox.baseVal;
         svgRect.x = 0;
         svgRect.y = 0;
-        svgRect.width = window.innerWidth;
-        svgRect.height = window.innerHeight;
+        svgRect.width = Math.ceil(window.innerWidth);
+        svgRect.height = Math.ceil(window.innerHeight);
 
     return ({
         svgRect
