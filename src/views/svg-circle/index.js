@@ -1,18 +1,22 @@
-export const svg_circle = new URL(import.meta.url).pathname.split('/').at(-2);
+import { setStyles } from "./index.css.js";
+import { setCoords, getNamespace } from "../utils.js";
+
+export const svg_circle = getNamespace(import.meta.url);
 customElements.define(svg_circle, class extends HTMLElement {
     
-    constructor() {
+    constructor({options}) {
 
-        if ( super() ){
+        if ( super() ) {
+
+            /**
+             * @css
+             */
+            setStyles.call(this, {options})
 
             let [translateX, translateY] = [window.innerWidth/2, window.innerHeight/2];
             this.setHTMLUnsafe(/* html */`
-                <style>
-                    svg { fill: green; }
-                </style>
-                <svg id='svg-circle'>
-                    <circle cx=${ translateX } cy=${ translateY } r=${ translateY/2 } />
-                    <circle cx=${ translateX } cy=${ translateY } r=${ translateY/2 } />
+                <svg id=${getNamespace(import.meta.url)}>
+                    <circle cx=${ options.translateX ?? translateX } cy=${ options.translateY ?? translateY  } r=${ options.radius ?? translateY/2 } />
                 </svg>
             `);
 
@@ -20,12 +24,8 @@ customElements.define(svg_circle, class extends HTMLElement {
 
     }
 
-    connectedCallback(){
-        let svgRectCoordsSystem = this.children.namedItem(svg_circle)?.viewBox.baseVal;
-            svgRectCoordsSystem.x = 0;
-            svgRectCoordsSystem.y = 0;
-            svgRectCoordsSystem.width = window.innerWidth;
-            svgRectCoordsSystem.height = window.innerHeight;
+    connectedCallback() {
+        setCoords(this, svg_circle)
     }
 
 });

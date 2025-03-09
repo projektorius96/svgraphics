@@ -1,11 +1,19 @@
 import './style.css';
-import * as SVGgraphics from './src/index.js';
+import './utils.js';
+import * as SVGraphics from './src/index.js';
 
 document.addEventListener('DOMContentLoaded', ()=>{
 
   document.body.appendChild(
-    new (
-      customElements.get(SVGgraphics.Views.Namespaces.svg_circle)
+    Reflect.construct(
+      customElements.get(SVGraphics.Views.Circle)
+      ,
+      ArgsList({
+        options: {
+          radius: 60,
+          fill: 'orange'
+        }
+      })
     )
   );
 
