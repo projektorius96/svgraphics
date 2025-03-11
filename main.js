@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
   document.body.appendChild(
     Reflect.construct(
-      customElements.get(SVGraphics.Views.Circle)
+      SVGraphics.Views.Circle
       ,
       ArgsList({
         options: {

@@ -8,6 +8,7 @@ customElements.define(svg_circle, class extends HTMLElement {
 
         if ( super() ) {
 
+            // DEV_NOTE # make `options` available within e.g. `connectedCallback` accessed as `this.options`
             Object.assign(this, {options})
 
             /**
@@ -16,10 +17,16 @@ customElements.define(svg_circle, class extends HTMLElement {
             setStyling.call(this, {options});
 
             this.setHTMLUnsafe(/* html */`
-                <svg id=${getNamespace(import.meta.url)}>
-                    <circle id=${options.id} cx=${ options.translateX ?? window.innerWidth/2 } cy=${ options.translateY ?? window.innerHeight/2  } r=${ options.radius ?? (Math.min(window.innerWidth, window.innerHeight) / 4) } />
+                <svg id=${ getNamespace(import.meta.url) } >
+                    <circle 
+                        id=${ options.id || getNamespace(import.meta.url) } 
+                        cx=${ this.options.translateX ?? window.innerWidth/2 } 
+                        cy=${ this.options.translateY ?? window.innerHeight/2 } 
+                        r=${ this.options.radius ?? Math.min(window.innerWidth, window.innerHeight)/4 } 
+                    />
                 </svg>
             `);
+            
 
         }
 
@@ -29,7 +36,7 @@ customElements.define(svg_circle, class extends HTMLElement {
 
         let { cx, cy, r } = document.getElementById(this.options.id).attributes;
         Object.assign(
-            document.getElementById(this.options.id), {
+            document.getElementById(this.options.id), Object.freeze({
                 getter: {
                     fill: ()=>{
                         return ({
@@ -53,7 +60,7 @@ customElements.define(svg_circle, class extends HTMLElement {
                 ,
                 setter: {
                     fill: (fill)=>{
-                        // # make sure we're referring to radius prop, not to radius method itself
+                        // DEV_NOTE (!) # make sure we're referring to radius prop, not to the radius method itself
                         if (!(fill instanceof Function)){
                             this.style.fill = fill;
                         }
@@ -65,14 +72,14 @@ customElements.define(svg_circle, class extends HTMLElement {
                     }
                     ,
                     radius: ({radius})=>{
-                        // # make sure we're referring to radius prop, not to radius method itself
+                        // DEV_NOTE (!) # make sure we're referring to radius prop, not to the radius method itself
                         if (!(radius instanceof Function)){
                             r.value = radius;
                         }
                     }
                 }
-            }
-        )
+            })
+        );
 
         setCoords(this, svg_circle);
         window.addEventListener('resize', ()=>{
