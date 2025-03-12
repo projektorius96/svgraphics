@@ -33,11 +33,7 @@ customElements.define(svg_circle, class extends HTMLElement {
 
         if ( super() ) {
 
-            if (options.draggable){
-
-                this.#enableDraggingFor(this, options);
-
-            }
+            if (options.draggable) this.#enableDraggingFor(this, options) ;
 
             // DEV_NOTE # make `options` available within e.g. `connectedCallback` accessed via `this.options`
             Object.assign(this, {options});
@@ -47,13 +43,16 @@ customElements.define(svg_circle, class extends HTMLElement {
              */
             setStyling.call(this, {options});
 
+            /**
+             * @html
+             */
             this.setHTMLUnsafe(/* html */`
                 <svg id=${ getNamespace(import.meta.url) } >
                     <circle 
-                        id=${ options.id || getNamespace(import.meta.url) } 
+                        id=${ options.id }
                         cx=${ options.translateX ?? window.innerWidth/2 } 
                         cy=${ options.translateY ?? window.innerHeight/2 } 
-                        r=${ options.radius ?? Math.min(window.innerWidth, window.innerHeight)/4 } 
+                        r=${  options.radius ?? Math.min(window.innerWidth, window.innerHeight)/4 } 
                     />
                 </svg>
             `);
@@ -122,7 +121,7 @@ customElements.define(svg_circle, class extends HTMLElement {
                 setCoords(this, svg_circle);
             });
 
-            typeof this.options.on === 'function' ? this.options.on({currentTarget: document.getElementById(this.options.id)}) : false ;
+            typeof this.options.on === 'function' ? this.options.on.bind(this, {currentTarget: document.getElementById(this.options.id)}) : false ;
 
         }
     

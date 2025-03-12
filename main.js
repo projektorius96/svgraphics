@@ -9,26 +9,31 @@ document.addEventListener('DOMContentLoaded', ()=>{
       ,
       ArgsList({
         options: {
-          id: `svg-circle-123`,
+          id: `circle-1`,
           radius: 150,
           fill: 'red',
           draggable: true,
-          on: function ({currentTarget: circle_123}) {
-            circle_123.addEventListener('click', ()=>{
+          on: function (/* {currentTarget} */) {
+          
+            this.addEventListener('click', ()=>{
               
-              document.getElementById(this.id).toggled = !(document.getElementById(this.id).toggled)
-              
-              if (document.getElementById(this.id).toggled){
-                circle_123.style.fill = 'green';
+              if ( this.options.toggled = !(this.options.toggled) ){
+                this.style.fill = 'green';
               } else {
-                circle_123.style.fill = this.fill;
+                this.style.fill = this.options.fill;
               }
 
             })
+
           }
         }
       })
     )
   );
+
+  if (document){
+    SVGraphics.Helpers.findBy('circle-1').options.on.call(SVGraphics.Helpers.findBy('circle-1'))
+  }
+  
 
 });
