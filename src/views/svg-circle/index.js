@@ -3,10 +3,42 @@ import { setCoords, getNamespace } from "../utils.js";
 
 export const svg_circle = getNamespace(import.meta.url);
 customElements.define(svg_circle, class extends HTMLElement {
+
+    #enableDraggingFor(thisArg, options){
+        
+        let targetElement = null;
+        function mousemove(e){
+                document.getElementById(options.id).setter.translate({x: e.pageX, y: e.pageY})
+                // targetElement.style.left = `${e.pageX}px`;
+                // targetElement.style.top = `${e.pageY}px`;
+        }
+        function mouseup(){
+            document.rm('mousemove', mousemove);
+            targetElement = null;
+        }
+        function mousedown(e){
+            if (targetElement === null) {
+                targetElement = e.currentTarget;
+            }
+            const { altKey } = e;
+            if    ( altKey )   {
+                e.preventDefault();
+                document.on('mousemove', mousemove);
+            } 
+        }
+        thisArg.on('mousedown', mousedown)
+        document.on('mouseup', mouseup)
+    }
     
     constructor({options}) {
 
         if ( super() ) {
+
+            if (options.draggable = true){
+
+                this.#enableDraggingFor(this, options)
+
+            }
 
             // DEV_NOTE # make `options` available within e.g. `connectedCallback` accessed as `this.options`
             Object.assign(this, {options})
@@ -81,10 +113,13 @@ customElements.define(svg_circle, class extends HTMLElement {
             })
         );
 
-        setCoords(this, svg_circle);
-        window.addEventListener('resize', ()=>{
-            setCoords(this, svg_circle)
-        });
+        if ( setCoords(this, svg_circle) ) {
+
+            window.addEventListener('resize', ()=>{
+                setCoords(this, svg_circle)
+            });
+
+        }
     
     }
 
