@@ -8,9 +8,8 @@ customElements.define(svg_circle, class extends HTMLElement {
         
         let targetElement = null;
         function mousemove(e){
-                document.getElementById(options.id).setter.translate({x: e.pageX, y: e.pageY})
-                // targetElement.style.left = `${e.pageX}px`;
-                // targetElement.style.top = `${e.pageY}px`;
+                document.getElementById(options.id)
+                .setter.translate({x: e.pageX, y: e.pageY});
         }
         function mouseup(){
             document.rm('mousemove', mousemove);
@@ -26,22 +25,22 @@ customElements.define(svg_circle, class extends HTMLElement {
                 document.on('mousemove', mousemove);
             } 
         }
-        thisArg.on('mousedown', mousedown)
-        document.on('mouseup', mouseup)
+        thisArg.on('mousedown', mousedown);
+        document.on('mouseup', mouseup);
     }
     
     constructor({options}) {
 
         if ( super() ) {
 
-            if (options.draggable = true){
+            if (options.draggable){
 
-                this.#enableDraggingFor(this, options)
+                this.#enableDraggingFor(this, options);
 
             }
 
-            // DEV_NOTE # make `options` available within e.g. `connectedCallback` accessed as `this.options`
-            Object.assign(this, {options})
+            // DEV_NOTE # make `options` available within e.g. `connectedCallback` accessed via `this.options`
+            Object.assign(this, {options});
 
             /**
              * @css
@@ -52,9 +51,9 @@ customElements.define(svg_circle, class extends HTMLElement {
                 <svg id=${ getNamespace(import.meta.url) } >
                     <circle 
                         id=${ options.id || getNamespace(import.meta.url) } 
-                        cx=${ this.options.translateX ?? window.innerWidth/2 } 
-                        cy=${ this.options.translateY ?? window.innerHeight/2 } 
-                        r=${ this.options.radius ?? Math.min(window.innerWidth, window.innerHeight)/4 } 
+                        cx=${ options.translateX ?? window.innerWidth/2 } 
+                        cy=${ options.translateY ?? window.innerHeight/2 } 
+                        r=${ options.radius ?? Math.min(window.innerWidth, window.innerHeight)/4 } 
                     />
                 </svg>
             `);
@@ -69,6 +68,10 @@ customElements.define(svg_circle, class extends HTMLElement {
         let { cx, cy, r } = document.getElementById(this.options.id).attributes;
         Object.assign(
             document.getElementById(this.options.id), Object.freeze({
+                options: {
+                    toggled: false,
+                    ...this.options
+                },
                 getter: {
                     fill: ()=>{
                         return ({
@@ -116,8 +119,10 @@ customElements.define(svg_circle, class extends HTMLElement {
         if ( setCoords(this, svg_circle) ) {
 
             window.addEventListener('resize', ()=>{
-                setCoords(this, svg_circle)
+                setCoords(this, svg_circle);
             });
+
+            typeof this.options.on === 'function' ? this.options.on({currentTarget: document.getElementById(this.options.id)}) : false ;
 
         }
     
