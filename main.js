@@ -1,5 +1,4 @@
 import './style.css';
-import './utils.js';
 import * as SVGraphics from './src/index.js';
 
 document.addEventListener('DOMContentLoaded', ()=>{
@@ -10,6 +9,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
       ,
       ArgsList({
         options: {
+          id: `${SVGraphics.Views.Circle}-123`,
           radius: 60,
           fill: 'orange'
         }
@@ -17,4 +17,4 @@ document.addEventListener('DOMContentLoaded', ()=>{
     )
   );
 
-})
+});

@@ -1,3 +1,7 @@
+globalThis.ArgsList = Array;
+EventTarget.prototype.on = EventTarget.prototype.addEventListener;
+EventTarget.prototype.rm = EventTarget.prototype.removeEventListener;
+
 export function getNamespace(import_meta_url) {
 
     return (
@@ -13,7 +17,5 @@ export function setCoords(self, svg_namespace) {
         svgRect.width = Math.ceil(window.innerWidth);
         svgRect.height = Math.ceil(window.innerHeight);
 
-    return ({
-        svgRect
-    });
+    return true;
 }

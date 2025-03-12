@@ -4,4 +4,4 @@ export const Views = {
     Circle: customElements.get(svg_circle)
 }
 
-Object.freeze(Views)
+Object.freeze(Views);
