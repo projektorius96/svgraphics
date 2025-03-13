@@ -3,23 +3,49 @@ import { setCoords, getNamespace } from "../utils.js";
 
 export const svg_circle = getNamespace(import.meta.url);
 customElements.define(svg_circle, class extends HTMLElement {
+
+    #enableDraggingFor(thisArg, options){
+        
+        let targetElement = null;
+        function mousemove(e){
+                document.getElementById(options.id)
+                .setter.translate({x: e.pageX, y: e.pageY});
+        }
+        function mouseup(){
+            document.rm('mousemove', mousemove);
+            targetElement = null;
+        }
+        function mousedown(e){
+            if (targetElement === null) {
+                targetElement = e.currentTarget;
+            }
+            const { altKey } = e;
+            if    ( altKey )   {
+                e.preventDefault();
+                document.on('mousemove', mousemove);
+            } 
+        }
+        thisArg.on('mousedown', mousedown);
+        document.on('mouseup', mouseup);
+    }
     
     constructor({options}) {
 
         if ( super() ) {
 
-            if (options.draggable) this.enableDraggingFor(this, options) ;
+            if (options.draggable) this.#enableDraggingFor(this, options) ;
+
+            // DEV_NOTE # make `options` available within e.g. `connectedCallback` accessed via `this.options`
+            Object.assign(this, {options});
 
             /**
              * @css
              */
-            let css;
             setStyling.call(this, {options});
 
             /**
              * @html
              */
-            let html;
             this.setHTMLUnsafe(/* html */`
                 <svg id=${ getNamespace(import.meta.url) } >
                     <circle 
@@ -30,14 +56,6 @@ customElements.define(svg_circle, class extends HTMLElement {
                     />
                 </svg>
             `);
-
-            /**
-             * @javascript
-             * 
-             * > The following line makes `options` available within e.g. `connectedCallback` accessed as `this.options`
-             */
-            let javascript;
-            Object.assign(this, {options});
             
 
         }
