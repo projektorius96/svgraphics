@@ -22,7 +22,7 @@ export default class {
             height: 100vh;
             background: transparent;
             z-index: ${ [S, V, G].reduce( (prev, current) => (prev += current) )};
-            fill: ${ options.fill };
+            fill: ${ options.fill || 'none' };
         `;
 
         return true;

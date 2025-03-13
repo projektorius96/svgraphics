@@ -34,9 +34,7 @@ customElements.define(svg_path, class extends HTMLElement {
              * @html
              */
             this.setHTMLUnsafe(/* html */`
-                <svg id=${ getNamespace(import.meta.url) } >
-                    <path id=${ options.id } d style="stroke:${options.stroke || 'black'};stroke-width:${options.strokeWidth || 3};fill=${options.fill || 'none'}">
-                </svg>
+                    <path id=${ options.id } d='${ this.#generateSVGPath(options.points) }' style="stroke:${options.stroke || 'black'};stroke-width:${options.strokeWidth || 3};fill=${options.fill || 'none'}">
             `);
 
             /**

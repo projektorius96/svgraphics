@@ -21,14 +21,12 @@ customElements.define(svg_circle, class extends HTMLElement {
              */
             let html;
             this.setHTMLUnsafe(/* html */`
-                <svg id=${ getNamespace(import.meta.url) } >
                     <circle 
                         id=${ options.id }
                         cx=${ options.translateX ?? window.innerWidth/2 } 
                         cy=${ options.translateY ?? window.innerHeight/2 } 
                         r=${  options.radius ?? Math.min(window.innerWidth, window.innerHeight)/4 } 
                     />
-                </svg>
             `);
 
             /**
