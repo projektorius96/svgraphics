@@ -1,42 +1,29 @@
 import setStyling from "./index.css.js";
 import { setCoords, getNamespace } from "../utils.js";
 
-export const svg_circle = getNamespace(import.meta.url);
-customElements.define(svg_circle, class extends HTMLElement {
+export const svg_path = getNamespace(import.meta.url);
+customElements.define(svg_path, class extends HTMLElement {
 
-    #enableDraggingFor(thisArg, options){
-        
-        let targetElement = null;
-        function mousemove(e){
-                document.getElementById(options.id)
-                .setter.translate({x: e.pageX, y: e.pageY});
-        }
-        function mouseup(){
-            document.rm('mousemove', mousemove);
-            targetElement = null;
-        }
-        function mousedown(e){
-            if (targetElement === null) {
-                targetElement = e.currentTarget;
-            }
-            const { altKey } = e;
-            if    ( altKey )   {
-                e.preventDefault();
-                document.on('mousemove', mousemove);
-            } 
-        }
-        thisArg.on('mousedown', mousedown);
-        document.on('mouseup', mouseup);
+    #generateSVGPath(points) {
+    
+        if (points.length === 0) return "";
+    
+        // Start with moveTo (M)
+        let path = `M ${points[0].x} ${points[0].y}`;
+            points.forEach((point, i) => {
+                if (i > 0){
+                    path += ` L ${point.x} ${point.y}`;
+                }
+            });
+    
+        return path;
     }
     
     constructor({options}) {
 
         if ( super() ) {
 
-            if (options.draggable) this.#enableDraggingFor(this, options) ;
-
-            // DEV_NOTE # make `options` available within e.g. `connectedCallback` accessed via `this.options`
-            Object.assign(this, {options});
+            if (options.draggable) this.enableDraggingFor(this, options) ;
 
             /**
              * @css
@@ -48,14 +35,19 @@ customElements.define(svg_circle, class extends HTMLElement {
              */
             this.setHTMLUnsafe(/* html */`
                 <svg id=${ getNamespace(import.meta.url) } >
-                    <circle 
-                        id=${ options.id }
-                        cx=${ options.translateX ?? window.innerWidth/2 } 
-                        cy=${ options.translateY ?? window.innerHeight/2 } 
-                        r=${  options.radius ?? Math.min(window.innerWidth, window.innerHeight)/4 } 
-                    />
+                    <path id=${ options.id } d style="stroke:${options.stroke || 'black'};stroke-width:${options.strokeWidth || 3};fill=${options.fill || 'none'}">
                 </svg>
             `);
+
+            /**
+             * @javascript
+             * 
+             * > The following line makes `options` available within e.g. `connectedCallback` accessed as `this.options`
+             */
+            Object.assign(this, {
+                options,
+                generateSVGPath: this.#generateSVGPath 
+            });
             
 
         }
@@ -64,7 +56,9 @@ customElements.define(svg_circle, class extends HTMLElement {
 
     connectedCallback() {
 
-        let { cx, cy, r } = document.getElementById(this.options.id).attributes;
+        let { d } = document.getElementById(this.options.id).attributes;
+            d.value = this.generateSVGPath(this.options.points);
+        
         Object.assign(
             document.getElementById(this.options.id), Object.freeze({
                 options: {
@@ -72,53 +66,27 @@ customElements.define(svg_circle, class extends HTMLElement {
                     ...this.options
                 },
                 getter: {
-                    fill: ()=>{
+                    points: ()=>{
                         return ({
-                            'fill': this.style.fill
-                        });
-                    }
-                    ,
-                    translate: ()=>{
-                        return ({
-                            translateX: cx.value,
-                            translateY: cy.value,
-                        });
-                    }
-                    ,
-                    radius: ()=>{
-                        return ({
-                            'radius' : r.value
+                            'points': d.value
                         });
                     }
                 }
                 ,
                 setter: {
-                    fill: (fill)=>{
-                        // DEV_NOTE (!) # make sure we're referring to radius prop, not to the radius method itself
-                        if (!(fill instanceof Function)){
-                            this.style.fill = fill;
-                        }
-                    }
-                    ,
-                    translate: ({x, y})=>{
-                        cx.value = x;
-                        cy.value = y;
-                    }
-                    ,
-                    radius: ({radius})=>{
-                        // DEV_NOTE (!) # make sure we're referring to radius prop, not to the radius method itself
-                        if (!(radius instanceof Function)){
-                            r.value = radius;
-                        }
+                    points: (points)=>{
+                        return ({
+                            'points': this.generateSVGPath(points || this.options.points)
+                        });
                     }
                 }
             })
         );
 
-        if ( setCoords(this, svg_circle) ) {
+        if ( setCoords(this, svg_path) ) {
 
             window.addEventListener('resize', ()=>{
-                setCoords(this, svg_circle);
+                setCoords(this, svg_path);
             });
 
             typeof this.options.on === 'function' ? this.options.on.bind(this, {currentTarget: document.getElementById(this.options.id)}) : false ;

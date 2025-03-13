@@ -17,9 +17,10 @@ export default class {
 
         thisArg.style.cssText = /* style */`
             display: block;
-            position: relative;
-                top: 0;
-                left: 0;
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            background: transparent;
             z-index: ${ [S, V, G].reduce( (prev, current) => (prev += current) )};
             fill: ${ options.fill };
         `;
