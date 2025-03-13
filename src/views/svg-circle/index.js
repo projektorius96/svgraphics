@@ -3,6 +3,10 @@ import { setCoords, getNamespace } from "../utils.js";
 
 export const svg_circle = getNamespace(import.meta.url);
 customElements.define(svg_circle, class extends HTMLElement {
+
+    static getNamespace(){
+        return svg_circle
+    }
     
     constructor({options}) {
 
@@ -38,7 +42,6 @@ customElements.define(svg_circle, class extends HTMLElement {
              */
             let javascript;
             Object.assign(this, {options});
-            
 
         }
 

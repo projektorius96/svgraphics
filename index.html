@@ -7,5 +7,22 @@
     <script type="module" src="/main.js" defer></script>
     <title></title>
   </head>
-  <body></body>
+  <body>
+    
+    <svg id="container" viewBox="0 0 100 100">
+      <rect x="0" y="0" width="1" height="1" fill="red" transform="scale(20, 20)"></rect>
+      <rect x="2" y="2" width="1" height="1" fill="blue" transform="scale(10, 10)"></rect>
+    </svg>
+    <script>
+      const svg = document.getElementById("container");
+        // const bbox = svg.getBBox();// DEV_NOTE # gets the actual content size
+        /* svg.setAttribute("viewBox", `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`); */
+      Array.from(svg.children).forEach((rect)=>{
+        rect.addEventListener('click', (e)=>{
+          console.log(e.currentTarget)
+        })
+      });
+    </script>
+    
+  </body>
 </html>
