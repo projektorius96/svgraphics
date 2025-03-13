@@ -8,20 +8,32 @@
     <title></title>
   </head>
   <body>
-    
     <svg id="container" viewBox="0 0 100 100">
-      <rect x="0" y="0" width="1" height="1" fill="red" transform="scale(20, 20)"></rect>
-      <rect x="2" y="2" width="1" height="1" fill="blue" transform="scale(10, 10)"></rect>
+      <rect id="rect-1" x="0" y="0" width="1" height="1" fill="red"></rect>
+      <rect id="rect-2" x="0" y="0" width="1" height="1" fill="blue"></rect>
     </svg>
     <script>
+      const options = {
+        scalingFactor: 10
+      }
       const svg = document.getElementById("container");
-        // const bbox = svg.getBBox();// DEV_NOTE # gets the actual content size
-        /* svg.setAttribute("viewBox", `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`); */
-      Array.from(svg.children).forEach((rect)=>{
-        rect.addEventListener('click', (e)=>{
-          console.log(e.currentTarget)
-        })
-      });
+        // svg.style.width = `${ Number( String(getComputedStyle(svg).width).replace(CSS.px.name, "") ) * options.scalingFactor }`
+      
+        Array.from(svg.children).forEach((rect, i)=>{
+
+          rect.setAttribute('width', rect.getAttribute('width') * options.scalingFactor)
+          rect.setAttribute('height', rect.getAttribute('height') * options.scalingFactor)
+          
+          if (rect.id === 'rect-2'){
+            rect.setAttribute('x', rect.getAttribute('x') + rect.getAttribute('width')/2)
+            rect.setAttribute('y', rect.getAttribute('y') + rect.getAttribute('height')/2)
+          }
+
+          rect.addEventListener('click', (e)=>{
+            console.log(e.currentTarget)
+          });
+
+        });
     </script>
     
   </body>
