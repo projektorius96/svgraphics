@@ -1,4 +1,4 @@
-import { setCoords, getNamespace } from "../utils";
+import { getNamespace } from "../utils";
 
 export const svg_container = getNamespace(import.meta.url);
 customElements.define(svg_container, class extends HTMLElement {
@@ -36,35 +36,27 @@ customElements.define(svg_container, class extends HTMLElement {
             let javascript;
             Object.assign(this, {options});
 
-            /* this.id = options.id || 'svg-container' */
-
         }
+
+        return ({
+            component: this,
+            element: this.firstElementChild
+        });
 
     }
 
     connectedCallback(){
 
         let svgElement = this.firstElementChild;
-            svgElement.style.cssText = /* style */`
-                display: inherit;
-                width: inherit;
-                height: inherit;
-            `;
-
-        /* let svgRect = this.children?.namedItem('svg-container').viewBox.baseVal;
-            svgRect.x = 0;
-            svgRect.y = 0;
-            svgRect.width = Math.ceil(window.innerWidth);
-            svgRect.height = Math.ceil(window.innerHeight); */
+            // svgElement.style.cssText = /* style */`
+            //     display: inherit;
+            //     width:   inherit;
+            //     height:  inherit;
+            // `;
 
         window.addEventListener('resize', ()=>{
-        
-            /*  svgRect.x = 0;
-            svgRect.y = 0;
-            svgRect.width = Math.ceil(window.innerWidth);
-            svgRect.height = Math.ceil(window.innerHeight); */
 
-            this.children.namedItem(svg_container).setAttribute('viewbox', `${0} ${0} ${this.options.clientWidth || window.innerWidth} ${this.options.clientHeight || window.innerHeight}`);
+            svgElement.setAttribute('viewbox', `${0} ${0} ${document.body.clientWidth || window.innerWidth} ${document.body.clientHeight || window.innerHeight}`);
             
         })
 

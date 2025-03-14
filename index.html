@@ -8,44 +8,38 @@
     <title></title>
   </head>
   <body>
-    <!-- <svg id="container" viewBox="0 0 100 100">
-      <rect id="rect-1" x="0" y="0" width="1" height="1" fill="red"></rect>
-      <rect id="rect-2" x="0" y="0" width="1" height="1" fill="blue"></rect>
-    </svg> -->
     <script type="module">
 
       import SVGraphics from './index.js';
 
-      const options = {
-        scalingFactor: 10
-      }
-
       document.body.appendChild(
-        Reflect.construct(SVGraphics.Views.Container, [{ options }])
+        Reflect.construct(SVGraphics.Views.Container, [{ options: {
+          scalingFactor: 100
+        } }]).element
       )
 
-      const svg = document.querySelector('svg-container');
+      const svg = document.querySelector('#svg-container');
         // svg.style.width = `${ Number( String(getComputedStyle(svg).width).replace(CSS.px.name, "") ) * options.scalingFactor }`
       
         Array.from(svg.children).forEach((rect, i)=>{
 
-          rect.setAttribute('width', rect.getAttribute('width') * options.scalingFactor)
-          rect.setAttribute('height', rect.getAttribute('height') * options.scalingFactor)
+          // rect.setAttribute('width', rect.getAttribute('width') * options.scalingFactor)
+          // rect.setAttribute('height', rect.getAttribute('height') * options.scalingFactor)
 
-          console.log(rect.getAttribute('width'));
+          // console.log(rect.getAttribute('width'));
           
           
-          if (rect.id === 'rect-2'){
-            rect.setAttribute('x', rect.getAttribute('x') + rect.getAttribute('width')/2)
-            rect.setAttribute('y', rect.getAttribute('y') + rect.getAttribute('height')/2)            
-          }
+          // if (rect.id === 'rect-2'){
+          //   rect.setAttribute('x', rect.getAttribute('x') + rect.getAttribute('width')/2)
+          //   rect.setAttribute('y', rect.getAttribute('y') + rect.getAttribute('height')/2)            
+          // }
 
           rect.addEventListener('click', (e)=>{
             console.log(e.currentTarget)
           });
 
         });
+
     </script>
-    
   </body>
 </html>
