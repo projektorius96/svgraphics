@@ -5,7 +5,9 @@ export const svg_circle = getNamespace(import.meta.url);
 customElements.define(svg_circle, class extends HTMLElement {
 
     static getNamespace(){
-        return svg_circle
+
+        return svg_circle;
+
     }
     
     constructor({options}) {
@@ -103,7 +105,9 @@ customElements.define(svg_circle, class extends HTMLElement {
         if ( setCoords(this, svg_circle) ) {
 
             window.addEventListener('resize', ()=>{
+
                 setCoords(this, svg_circle);
+                
             });
 
             typeof this.options.on === 'function' ? this.options.on.bind(this, {currentTarget: document.getElementById(this.options.id)}) : false ;

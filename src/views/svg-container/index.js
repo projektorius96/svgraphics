@@ -1,8 +1,7 @@
-/* import setStyling from "./svg-circle/index.css"; */
-import { setCoords, getNamespace } from "./utils";
+import { setCoords, getNamespace } from "../utils";
 
 export const svg_container = getNamespace(import.meta.url);
-customElements.define('svg-container', class extends HTMLElement {
+customElements.define(svg_container, class extends HTMLElement {
 
     constructor({options}) {
 
@@ -12,9 +11,9 @@ customElements.define('svg-container', class extends HTMLElement {
              * @css
              */
             let css;
-            /* setStyling.call(this, {options}); */
             this.style.cssText = /* style */`
-                width: 100%;
+                display: block;
+                width: calc(100vw - (100vw - 100%));
                 height: 100vh;
             `;
 
@@ -23,7 +22,10 @@ customElements.define('svg-container', class extends HTMLElement {
              */
             let html;
             this.setHTMLUnsafe(/* html */`
-                <svg id="${ svg_container }"></svg>
+                <svg id="${ svg_container }" viewBox="0 0 ${options.clientWidth || window.innerWidth} ${options.clientHeight || window.innerHeight}">
+                    <rect id="rect-1" x="0" y="0" width="${ 1 * (options.scalingFactor || 1) }" height="${ 1 * (options.scalingFactor || 1) }" fill="red"></rect>
+                    <rect id="rect-2" x="0" y="0" width="${ 1 * (options.scalingFactor || 1) }" height="${ 1 * (options.scalingFactor || 1) }" fill="blue"></rect>
+                </svg>
             `);
 
             /**
@@ -42,24 +44,27 @@ customElements.define('svg-container', class extends HTMLElement {
 
     connectedCallback(){
 
-        this.children.namedItem(svg_container).setAttribute('style', /* style */`width:inherit; height: inherit;`)
+        let svgElement = this.firstElementChild;
+            svgElement.style.cssText = /* style */`
+                display: inherit;
+                width: inherit;
+                height: inherit;
+            `;
 
-        // let svgRect = this.children?.namedItem('svg-container').viewBox.baseVal;
-        //     svgRect.x = 0;
-        //     svgRect.y = 0;
-        //     svgRect.width = Math.ceil(window.innerWidth);
-        //     svgRect.height = Math.ceil(window.innerHeight);
-
-        this.children.namedItem(svg_container).setAttribute('viewbox', `${0} ${0} ${window.innerWidth} ${window.innerHeight}`);
+        /* let svgRect = this.children?.namedItem('svg-container').viewBox.baseVal;
+            svgRect.x = 0;
+            svgRect.y = 0;
+            svgRect.width = Math.ceil(window.innerWidth);
+            svgRect.height = Math.ceil(window.innerHeight); */
 
         window.addEventListener('resize', ()=>{
         
-            // svgRect.x = 0;
-            // svgRect.y = 0;
-            // svgRect.width = Math.ceil(window.innerWidth);
-            // svgRect.height = Math.ceil(window.innerHeight);
+            /*  svgRect.x = 0;
+            svgRect.y = 0;
+            svgRect.width = Math.ceil(window.innerWidth);
+            svgRect.height = Math.ceil(window.innerHeight); */
 
-            this.children.namedItem(svg_container).setAttribute('viewbox', `${0} ${0} ${window.innerWidth} ${window.innerHeight}`);
+            this.children.namedItem(svg_container).setAttribute('viewbox', `${0} ${0} ${this.options.clientWidth || window.innerWidth} ${this.options.clientHeight || window.innerHeight}`);
             
         })
 
@@ -67,4 +72,4 @@ customElements.define('svg-container', class extends HTMLElement {
         
 })
 
-export default customElements.get(svg_container);
+/* export default customElements.get(svg_container); */
