@@ -10,12 +10,20 @@ export function getNamespace(import_meta_url) {
 
 }
 
-export function setCoords(self, svg_namespace) {
-    let svgRect = self.children?.namedItem(svg_namespace).viewBox.baseVal;
-        svgRect.x = 0;
-        svgRect.y = 0;
-        svgRect.width = Math.ceil(window.innerWidth);
-        svgRect.height = Math.ceil(window.innerHeight);
+export function setCoords() {
 
-    return true;
+    const 
+        svgElement = this.firstElementChild
+        ,
+        viewBox = svgElement.viewBox.baseVal
+        ;
+
+        svgElement.setAttribute('viewBox', `${0} ${0} ${Math.ceil(window.innerWidth)} ${Math.ceil(window.innerHeight)}`)
+        
+    return ({
+        getViewBox(){
+            return viewBox
+        }
+    });
+    
 }

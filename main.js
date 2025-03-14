@@ -7,9 +7,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
       scalingFactor: 100
     } }]);
 
-    document.body.appendChild(
-      container.element
-    )
+    document.body.appendChild(container.component)
 
     const svg = document.querySelector('#svg-container');
       // svg.style.width = `${ Number( String(getComputedStyle(svg).width).replace(CSS.px.name, "") ) * options.scalingFactor }`
