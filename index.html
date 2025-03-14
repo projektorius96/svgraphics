@@ -7,39 +7,5 @@
     <script type="module" src="/main.js" defer></script>
     <title></title>
   </head>
-  <body>
-    <script type="module">
-
-      import SVGraphics from './index.js';
-
-      document.body.appendChild(
-        Reflect.construct(SVGraphics.Views.Container, [{ options: {
-          scalingFactor: 100
-        } }]).element
-      )
-
-      const svg = document.querySelector('#svg-container');
-        // svg.style.width = `${ Number( String(getComputedStyle(svg).width).replace(CSS.px.name, "") ) * options.scalingFactor }`
-      
-        Array.from(svg.children).forEach((rect, i)=>{
-
-          // rect.setAttribute('width', rect.getAttribute('width') * options.scalingFactor)
-          // rect.setAttribute('height', rect.getAttribute('height') * options.scalingFactor)
-
-          // console.log(rect.getAttribute('width'));
-          
-          
-          // if (rect.id === 'rect-2'){
-          //   rect.setAttribute('x', rect.getAttribute('x') + rect.getAttribute('width')/2)
-          //   rect.setAttribute('y', rect.getAttribute('y') + rect.getAttribute('height')/2)            
-          // }
-
-          rect.addEventListener('click', (e)=>{
-            console.log(e.currentTarget)
-          });
-
-        });
-
-    </script>
-  </body>
+  <body></body>
 </html>
