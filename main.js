@@ -3,27 +3,56 @@ import * as SVGraphics from './src/index.js';
 
 document.addEventListener('DOMContentLoaded', ()=>{
 
-    const container = Reflect.construct(SVGraphics.Views.Container, [{ options: {
-      scalingFactor: 100
-    } }]);
+    const 
+      [
+        circle,
+      ] = [
+        new SVGraphics.Views.Circle({ 
+          options: { 
+            id: 'svg-circle',
+            scalingFactor: 100,
+            fill: 'coral', 
+            radius: 150,
+            translateX: window.innerWidth/2,
+            translateY: window.innerHeight/2
+          } 
+        })
+      ]
+      ,
+      container = 
+      new SVGraphics.Views.Container({
+        options: { 
+          id: 'top-level',
+          scalingFactor: 100, 
+        }, 
+        children: [
+          circle.component,
+        ]       
+      })
+      ;
 
     document.body.appendChild(container.component)
 
-    const svg = document.querySelector('#svg-container');
-      // svg.style.width = `${ Number( String(getComputedStyle(svg).width).replace(CSS.px.name, "") ) * options.scalingFactor }`
+    const svgContainer = document.querySelector('#top-level');
 
-      Array.from(svg.children).forEach((rect, i)=>{
+      if ( svgContainer ) {
 
-        rect.addEventListener('click', (e)=>{
-          console.log(e.currentTarget)
+        Array.from(svgContainer.children).forEach((rect, i)=>{
+
+          rect.addEventListener('click', (e)=>{
+            console.log(e.currentTarget)
+          });
+
+          if (rect.id === 'rect-2'){
+            console.log(container?.firstElementChild);
+            
+            container.element.children.namedItem('rect-1').setAttribute( 'x', Number( rect.getAttribute('x') + rect.getAttribute('width') ) )
+            container.element.children.namedItem('rect-1').setAttribute( 'y', Number( rect.getAttribute('y') + rect.getAttribute('height') ) )            
+          }
+
         });
 
-        if (rect.id === 'rect-2'){
-          container.element.children.namedItem('rect-1').setAttribute( 'x', Number( rect.getAttribute('x') + rect.getAttribute('width') ) )
-          container.element.children.namedItem('rect-1').setAttribute( 'y', Number( rect.getAttribute('y') + rect.getAttribute('height') ) )            
-        }
-
-      });
+      }
 
   /* === IGNORE === */
 

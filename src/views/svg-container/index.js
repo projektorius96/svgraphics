@@ -3,7 +3,7 @@ import { setCoords, getNamespace } from "../utils";
 export const svg_container = getNamespace(import.meta.url);
 customElements.define(svg_container, class extends HTMLElement {
 
-    constructor({options}) {
+    constructor({options, children}) {
 
         if ( super() ) {
 
@@ -16,15 +16,19 @@ customElements.define(svg_container, class extends HTMLElement {
                 width: calc(100vw - (100vw - 100%));
                 height: 100vh;
             `;
+            
+            let interpolatedHTML = '';
+                children.forEach((svgElement)=>interpolatedHTML += svgElement.getHTML());         
 
             /**
              * @html
              */
-            let html;
+            /* let html; */
             this.setHTMLUnsafe(/* html */`
-                <svg id="${ svg_container }" >
+                <svg id="${ options.id || svg_container }" >
                     <rect id="rect-1" x="0" y="0" width="${ 1 * (options.scalingFactor || 1) }" height="${ 1 * (options.scalingFactor || 1) }" fill="red"></rect>
                     <rect id="rect-2" x="0" y="0" width="${ 1 * (options.scalingFactor || 1) }" height="${ 1 * (options.scalingFactor || 1) }" fill="blue"></rect>
+                    ${ interpolatedHTML }
                 </svg>
             `);
 

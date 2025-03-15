@@ -20,21 +20,22 @@ customElements.define(svg_circle, class extends HTMLElement {
              * @css
              */
             let css;
-            setStyling.call(this, {options});
+            /* setStyling.call(this, {options}); */
 
             /**
              * @html
              */
             let html;
             this.setHTMLUnsafe(/* html */`
-                <svg id=${ getNamespace(import.meta.url) } >
-                    <circle 
-                        id=${ options.id }
-                        cx=${ options.translateX ?? window.innerWidth/2 } 
-                        cy=${ options.translateY ?? window.innerHeight/2 } 
-                        r=${  options.radius ?? Math.min(window.innerWidth, window.innerHeight)/4 } 
+                    <circle
+                    id=${ options.id }
+                    width="${ 1 * (options.scalingFactor || 1) }" 
+                    height="${ 1 * (options.scalingFactor || 1) }" 
+                    fill="${ options.fill || 'none' }"
+                    cx="${ options.translateX || 0 }" 
+                    cy="${ options.translateY || 0  }" 
+                    r=${  options.radius ?? Math.min(window.innerWidth, window.innerHeight)/4 } 
                     />
-                </svg>
             `);
 
             /**
@@ -46,6 +47,11 @@ customElements.define(svg_circle, class extends HTMLElement {
             Object.assign(this, {options});
 
         }
+
+        return ({
+            component: this,
+            element: this.firstElementChild
+        });
 
     }
 
