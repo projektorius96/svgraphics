@@ -1,9 +1,18 @@
-export function enableDraggingFor(thisArg, options){
+export function enableDraggingFor(currentTarget){
 
     let targetElement = null;
     function mousemove(e){
-            document.getElementById(options.id)
-            .setter.translate({x: e.pageX, y: e.pageY});
+
+        switch (currentTarget.tagName) {
+            case 'circle':
+                document.getElementById(currentTarget.id).setAttribute('cx', e.pageX)
+                document.getElementById(currentTarget.id).setAttribute('cy', e.pageY)
+                break;
+            case 'path':
+                document.getElementById(currentTarget.id).setAttribute('transform', `translate(${e.pageX}, ${e.pageY})`)
+                break;
+        }
+
     }
     function mouseup(){
         document.rm('mousemove', mousemove);
@@ -19,7 +28,7 @@ export function enableDraggingFor(thisArg, options){
             document.on('mousemove', mousemove);
         } 
     }
-    thisArg.on('mousedown', mousedown);
+    currentTarget.on('mousedown', mousedown);
     document.on('mouseup', mouseup);
 
 }

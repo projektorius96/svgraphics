@@ -33,48 +33,15 @@ customElements.define(svg_circle, class extends HTMLElement {
 
         }
 
+        Object.assign(this.firstElementChild, {
+            a: 123
+        })
+
         return ({
             component: this,
             element: this.firstElementChild
         });
 
-    }
-
-    connectedCallback() {
-
-        let { cx, cy, r } = this.firstElementChild.attributes;
-        Object.assign(
-            this.firstElementChild, Object.freeze({
-                options: {
-                    toggled: false,
-                    ...this.options
-                }
-                ,
-                setter: {
-                    fill: (fill)=>{
-                        // DEV_NOTE (!) # make sure we're referring to radius prop, not to the radius method itself
-                        if (!(fill instanceof Function)){
-                            this.style.fill = fill;
-                        }
-                    }
-                    ,
-                    translate: ({x, y})=>{
-                        cx.value = x;
-                        cy.value = y;
-                    }
-                    ,
-                    radius: ({radius})=>{
-                        // DEV_NOTE (!) # make sure we're referring to radius prop, not to the radius method itself
-                        if (!(radius instanceof Function)){
-                            r.value = radius;
-                        }
-                    }
-                }
-            })
-        );
-
-        typeof this.options.on === 'function' ? this.options.on/* .bind */(/* this,  */{currentTarget: document.getElementById(this.options.id)}) : false ;
-    
     }
 
 });

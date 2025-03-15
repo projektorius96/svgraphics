@@ -27,9 +27,3 @@ export function setCoords() {
     });
     
 }
-
-export function registerComponents(componentList = [], elementTarget = document.body){
-    if ( (componentList.length > 0) ){
-        elementTarget.prepend(...componentList)
-    }
-}

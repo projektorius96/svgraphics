@@ -55,27 +55,4 @@ customElements.define(svg_path, class extends HTMLElement {
 
     }
 
-    connectedCallback() {
-        
-        Object.assign(
-            document.getElementById(this.options.id), Object.freeze({
-                options: {
-                    toggled: false,
-                    ...this.options
-                }
-                ,
-                setter: {
-                    points: (points)=>{
-                        return ({
-                            'points': this.generateSVGPath(points || this.options.points)
-                        });
-                    }
-                }
-            })
-        );
-
-        typeof this.options.on === 'function' ? this.options.on/* .bind */(/* this,  */{currentTarget: document.getElementById(this.options.id)}) : false ;
-    
-    }
-
 });
