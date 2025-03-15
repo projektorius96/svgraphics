@@ -1,5 +1,5 @@
 export function enableDraggingFor(thisArg, options){
-        
+
     let targetElement = null;
     function mousemove(e){
             document.getElementById(options.id)

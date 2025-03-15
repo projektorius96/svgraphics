@@ -1,3 +1,6 @@
+/**
+ * > **NOTE** : DEV_NOTE # ignore for now, this may come handy later on whenever we implement layer manager (grouped svg-containers) in tandem with z-index
+ */
 export default class {
 
     /**

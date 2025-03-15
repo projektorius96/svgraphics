@@ -3,7 +3,7 @@ import { setCoords, getNamespace } from "../utils";
 export const svg_container = getNamespace(import.meta.url);
 customElements.define(svg_container, class extends HTMLElement {
 
-    constructor({options, children}) {
+    constructor({options, childrenList}) {
 
         if ( super() ) {
 
@@ -18,7 +18,7 @@ customElements.define(svg_container, class extends HTMLElement {
             `;
             
             let interpolatedHTML = '';
-                children.forEach((svgElement)=>interpolatedHTML += svgElement.getHTML());         
+                childrenList.forEach((svgElement)=>interpolatedHTML += svgElement?.getHTML());         
 
             /**
              * @html
@@ -26,8 +26,8 @@ customElements.define(svg_container, class extends HTMLElement {
             /* let html; */
             this.setHTMLUnsafe(/* html */`
                 <svg id="${ options.id || svg_container }" >
-                    <rect id="rect-1" x="0" y="0" width="${ 1 * (options.scalingFactor || 1) }" height="${ 1 * (options.scalingFactor || 1) }" fill="red"></rect>
-                    <rect id="rect-2" x="0" y="0" width="${ 1 * (options.scalingFactor || 1) }" height="${ 1 * (options.scalingFactor || 1) }" fill="blue"></rect>
+                    <!-- <rect id="rect-1" x="0" y="0" width="${ 1 * (options.scalingFactor || 1) }" height="${ 1 * (options.scalingFactor || 1) }" fill="red"></rect>
+                    <rect id="rect-2" x="0" y="0" width="${ 1 * (options.scalingFactor || 1) }" height="${ 1 * (options.scalingFactor || 1) }" fill="blue"></rect> -->
                     ${ interpolatedHTML }
                 </svg>
             `);
@@ -39,6 +39,7 @@ customElements.define(svg_container, class extends HTMLElement {
              */
             let javascript;
             Object.assign(this, {options});
+            Object.assign(this, {childrenList});
 
         }
 
@@ -61,5 +62,3 @@ customElements.define(svg_container, class extends HTMLElement {
         }
         
 })
-
-/* export default customElements.get(svg_container); */

@@ -6,15 +6,33 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const 
       [
         circle,
+        path,
       ] = [
         new SVGraphics.Views.Circle({ 
           options: { 
             id: 'svg-circle',
+            draggable: true,
             scalingFactor: 100,
             fill: 'coral', 
             radius: 150,
             translateX: window.innerWidth/2,
             translateY: window.innerHeight/2
+          } 
+        }),
+        new SVGraphics.Views.Line({ 
+          options: { 
+            id: 'svg-path',
+            draggable: true,
+            scalingFactor: 100,
+            points: [
+              { x: 50, y: 50 },
+              { x: 150, y: 50 },
+              { x: 100, y: 100 },
+              { x: 50, y: 50 },
+            ],
+            fill: 'orange',
+            stroke: 'blue',
+            strokeWidth: 4,
           } 
         })
       ]
@@ -25,8 +43,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
           id: 'top-level',
           scalingFactor: 100, 
         }, 
-        children: [
+        childrenList: [
           circle.component,
+          path.component,
         ]       
       })
       ;
@@ -34,20 +53,23 @@ document.addEventListener('DOMContentLoaded', ()=>{
     document.body.appendChild(container.component)
 
     const svgContainer = document.querySelector('#top-level');
-
       if ( svgContainer ) {
 
-        Array.from(svgContainer.children).forEach((rect, i)=>{
+        // DEV_NOTE (!) # the line below ensures that each web-component's life cycle method `connectedCallback` is triggered
+        SVGraphics.Helpers.registerComponents(container.component.childrenList)
 
-          rect.addEventListener('click', (e)=>{
+        // DEV_NOTE # this scope is planned to be moved to earlier-defined `on` attribute
+        Array.from(svgContainer.children).forEach((shape)=>{
+
+          shape.addEventListener('click', (e)=>{
             console.log(e.currentTarget)
           });
 
-          if (rect.id === 'rect-2'){
+          if (shape.id === 'rect-2'){
             console.log(container?.firstElementChild);
             
-            container.element.children.namedItem('rect-1').setAttribute( 'x', Number( rect.getAttribute('x') + rect.getAttribute('width') ) )
-            container.element.children.namedItem('rect-1').setAttribute( 'y', Number( rect.getAttribute('y') + rect.getAttribute('height') ) )            
+            container.element.children.namedItem('rect-1').setAttribute( 'x', Number( shape.getAttribute('x') + shape.getAttribute('width') ) )
+            container.element.children.namedItem('rect-1').setAttribute( 'y', Number( shape.getAttribute('y') + shape.getAttribute('height') ) )            
           }
 
         });
@@ -89,15 +111,15 @@ document.addEventListener('DOMContentLoaded', ()=>{
   //     ArgsList({
   //       options: {
   //         id: `path-1`,
-  //         points: [
-  //           { x: 50, y: 50 },
-  //           { x: 150, y: 50 },
-  //           { x: 100, y: 100 },
-  //           { x: 50, y: 50 } /* <= # manually closing the path */,
-  //         ],
-  //         fill: 'orange',
-  //         stroke: 'blue',
-  //         strokeWidth: 4,
+          // points: [
+          //   { x: 50, y: 50 },
+          //   { x: 150, y: 50 },
+          //   { x: 100, y: 100 },
+          //   { x: 50, y: 50 } /* <= # manually closing the path */,
+          // ],
+          // fill: 'orange',
+          // stroke: 'blue',
+          // strokeWidth: 4,
   //         draggable: !true, /* <= DEV_NOTE (!) # modifications required to work: i.e. translate works via `transform="translate(x,y)";`, and not via pair of cx|cy attributes  */
   //         on: function (/* {currentTarget} */) {
           

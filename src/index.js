@@ -1,3 +1,4 @@
+import { registerComponents } from './views/utils.js';
 import { svg_container } from './views/svg-container/index.js';
 import { svg_circle } from './views/svg-circle/index.js';
 import { svg_path } from './views/svg-path/index.js';
@@ -16,6 +17,8 @@ export const Helpers = {
             document?.getElementById(id)
         )
     }
+    ,
+    registerComponents
 }
 
 Object.freeze(Views);

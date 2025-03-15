@@ -1,26 +1,13 @@
-import setStyling from "./index.css.js";
-import { setCoords, getNamespace } from "../utils.js";
+import { getNamespace } from "../utils.js";
 
 export const svg_circle = getNamespace(import.meta.url);
 customElements.define(svg_circle, class extends HTMLElement {
 
-    static getNamespace(){
-
-        return svg_circle;
-
-    }
-    
     constructor({options}) {
 
         if ( super() ) {
 
-            if (options.draggable) this.enableDraggingFor(this, options) ;
-
-            /**
-             * @css
-             */
-            let css;
-            /* setStyling.call(this, {options}); */
+            /* if (options.draggable) this.enableDraggingFor(null, options) ; */
 
             /**
              * @html
@@ -29,8 +16,6 @@ customElements.define(svg_circle, class extends HTMLElement {
             this.setHTMLUnsafe(/* html */`
                     <circle
                     id=${ options.id }
-                    width="${ 1 * (options.scalingFactor || 1) }" 
-                    height="${ 1 * (options.scalingFactor || 1) }" 
                     fill="${ options.fill || 'none' }"
                     cx="${ options.translateX || 0 }" 
                     cy="${ options.translateY || 0  }" 
@@ -57,32 +42,12 @@ customElements.define(svg_circle, class extends HTMLElement {
 
     connectedCallback() {
 
-        let { cx, cy, r } = document.getElementById(this.options.id).attributes;
+        let { cx, cy, r } = this.firstElementChild.attributes;
         Object.assign(
-            document.getElementById(this.options.id), Object.freeze({
+            this.firstElementChild, Object.freeze({
                 options: {
                     toggled: false,
                     ...this.options
-                },
-                getter: {
-                    fill: ()=>{
-                        return ({
-                            'fill': this.style.fill
-                        });
-                    }
-                    ,
-                    translate: ()=>{
-                        return ({
-                            translateX: cx.value,
-                            translateY: cy.value,
-                        });
-                    }
-                    ,
-                    radius: ()=>{
-                        return ({
-                            'radius' : r.value
-                        });
-                    }
                 }
                 ,
                 setter: {
@@ -108,17 +73,7 @@ customElements.define(svg_circle, class extends HTMLElement {
             })
         );
 
-        if ( setCoords(this, svg_circle) ) {
-
-            window.addEventListener('resize', ()=>{
-
-                setCoords(this, svg_circle);
-                
-            });
-
-            typeof this.options.on === 'function' ? this.options.on.bind(this, {currentTarget: document.getElementById(this.options.id)}) : false ;
-
-        }
+        typeof this.options.on === 'function' ? this.options.on/* .bind */(/* this,  */{currentTarget: document.getElementById(this.options.id)}) : false ;
     
     }
 
